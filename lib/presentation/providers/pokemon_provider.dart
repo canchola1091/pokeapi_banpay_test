@@ -6,7 +6,6 @@ import 'package:pokeapi_banpay_test/data/datasources/remote/pokemon_remote_data_
 import 'package:pokeapi_banpay_test/data/repositories/pokemon_repository_impl.dart';
 import 'package:pokeapi_banpay_test/domain/repositories/pokemon_repository.dart';
 import 'package:pokeapi_banpay_test/domain/usecases/get_pokemon_detail.dart';
-import 'package:pokeapi_banpay_test/domain/usecases/get_pokemon_id.dart';
 import 'package:pokeapi_banpay_test/domain/usecases/get_pokemon_list.dart';
 import 'package:pokeapi_banpay_test/presentation/providers/pokemon_detail_notifier.dart';
 import 'pokemon_notifier.dart';
@@ -31,8 +30,6 @@ final pokemonRepositoryProvider = Provider<PokemonRepository>((ref) => PokemonRe
 //? Provider Caso de Uso (obtener lista)
 final getPokemonListProvider = Provider<GetPokemonList>((ref) => GetPokemonList(ref.watch(pokemonRepositoryProvider)));
 
-//? Provider Caso de Uso (obtener por ID)
-final getPokemonByIdProvider = Provider<GetPokemonById>((ref) => GetPokemonById(ref.watch(pokemonRepositoryProvider)));
 
 //? Provider Caso de Uso (obtener detalles)
 final getPokemonDetailProvider = Provider<GetPokemonDetail>((ref) => GetPokemonDetail(ref.watch(pokemonRepositoryProvider)));

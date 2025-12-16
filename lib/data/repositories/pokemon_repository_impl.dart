@@ -15,11 +15,6 @@ class PokemonRepositoryImpl implements PokemonRepository {
   }
 
   @override
-  Future<PokemonModel> getPokemonById(int id) {
-    return _dataSource.getPokemonById(id);
-  }
-
-  @override
   Future<PokemonDetailModel> getPokemonDetailById(int id) {
     return _dataSource.getPokemonDetailById(id);
   }

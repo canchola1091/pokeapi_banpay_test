@@ -5,7 +5,6 @@ import 'package:pokeapi_banpay_test/data/models/pokemon_model.dart';
 
 abstract class PokemonRemoteDataSource {
   Future<List<PokemonModel>> getPokemonList();
-  Future<PokemonModel> getPokemonById(int id);
   Future<PokemonDetailModel> getPokemonDetailById(int id);
 }
 
@@ -38,12 +37,6 @@ class PokemonRemoteDataSourceImpl implements PokemonRemoteDataSource {
     }
 
     return pokemonList;
-  }
-
-  @override
-  Future<PokemonModel> getPokemonById(int id) async {
-    final response = await _dio.get('/pokemon/$id');
-    return PokemonModel.fromJson(response.data);
   }
   
   @override
