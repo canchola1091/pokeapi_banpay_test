@@ -1,11 +1,11 @@
 
 import 'package:pokeapi_banpay_test/domain/repositories/favorite_pokemon_repository.dart';
 
-class UpadteFavoritePokemon {
+class UpdateFavoritePokemon {
 
   final FavoritePokemonRepository repository;
 
-  UpadteFavoritePokemon(this.repository);
+  UpdateFavoritePokemon(this.repository);
 
   Future<void> call(int id, String newNote) async => await repository.updateFavoritePokemonNote(id, newNote);
 
