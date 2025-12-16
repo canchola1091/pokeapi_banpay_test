@@ -1,9 +1,5 @@
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pokeapi_banpay_test/domain/usecases/remove_favorite_pokemon.dart';
-import 'package:pokeapi_banpay_test/domain/usecases/update_favorite_pokemon.dart';
-
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:pokeapi_banpay_test/data/models/favorite_pokemon_model.dart';
 import 'package:pokeapi_banpay_test/presentation/providers/favorite_pokemon_notifier.dart';
@@ -12,9 +8,8 @@ import 'package:pokeapi_banpay_test/data/repositories/favorite_pokemon_repositor
 import 'package:pokeapi_banpay_test/domain/repositories/favorite_pokemon_repository.dart';
 import 'package:pokeapi_banpay_test/domain/usecases/add_favorite_pokemon.dart';
 import 'package:pokeapi_banpay_test/domain/usecases/get_favorite_pokemon_list.dart';
-
-//? Provider SharedPreferences
-// final sharedPreferencesProvider = Provider<SharedPreferences>((ref) => throw UnimplementedError());
+import 'package:pokeapi_banpay_test/domain/usecases/remove_favorite_pokemon.dart';
+import 'package:pokeapi_banpay_test/domain/usecases/update_favorite_pokemon.dart';
 
 //? Provider DataSource
 final favoritePokemonLocalDataSourceProvider = Provider<FavoritePokemonLocalDataSource>((ref) => FavoritePokemonLocalDataSourceImpl());
@@ -33,6 +28,16 @@ final updateFavoritePokemonProvider = Provider<UpdateFavoritePokemon>((ref) => U
 
 //? Provider Caso de Uso (Eliminar favorito)
 final removeFavoritePokemonProvider = Provider<RemoveFavoritePokemon>((ref) => RemoveFavoritePokemon(ref.watch(favoritePokemonRepositoryProvider)));
+
+//? Provider Set de IDs de Pokemones Favoritos
+final favoritePokemonIdsProvider = Provider<Set<int>>((ref) {
+  final state = ref.watch(favoritePokemonListNotifierProvider);
+  return state.when(
+    data: (favorites) => favorites.map((fp) => fp.id).toSet(),
+    error: (error, stack) => const {},
+    loading: () => const {},
+  );
+});
 
 //? Provider Notifier de la lista de favoritos
 final favoritePokemonListNotifierProvider = StateNotifierProvider<FavoritePokemonListNotifier, AsyncValue<List<FavoritePokemonModel>>>(

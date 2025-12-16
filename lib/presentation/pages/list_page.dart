@@ -1,6 +1,4 @@
 
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,6 +8,7 @@ import 'package:pokeapi_banpay_test/data/models/pokemon_model.dart';
 import 'package:pokeapi_banpay_test/presentation/pages/detail_page.dart';
 import 'package:pokeapi_banpay_test/presentation/pages/favorites_page.dart';
 import 'package:pokeapi_banpay_test/presentation/providers/favorite_pokemon_provider.dart';
+import 'package:pokeapi_banpay_test/presentation/providers/pokemon_notifier.dart';
 import 'package:pokeapi_banpay_test/presentation/providers/pokemon_provider.dart';
 class ListPage extends ConsumerStatefulWidget {
 
@@ -32,23 +31,27 @@ class _ListPageState extends ConsumerState<ListPage> {
   @override
   Widget build(BuildContext context) {
 
-    final pokemonState = ref.watch(pokemonListNotifierProvider);
+    final PokemonState pokemonState = ref.watch(pokemonListNotifierProvider);
+    final Set<int> favoriteIds = ref.watch(favoritePokemonIdsProvider);
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: const Text('Lista de Pokemones'),
-        actions: [
+        actions: (favoriteIds.isNotEmpty)
+        ? [
           IconButton(
             icon: const Icon(Icons.favorite),
+            color: Colors.red,
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => const FavoritesPage(),
                 ),
               );
-            },
-          ),
-        ],
+            }
+          )
+        ] : [],
       ),
       body: (pokemonState.isLoading)
           ? const Column(
@@ -66,6 +69,7 @@ class _ListPageState extends ConsumerState<ListPage> {
                   itemBuilder: (context, index) {
 
                     final PokemonModel pokemon = pokemonState.pokemons![index];
+                    final isFavorite = favoriteIds.contains(pokemon.id);
                     final String formatName = pokemon.name[0].toUpperCase() + pokemon.name.substring(1);
 
                     return ListTile(
@@ -74,11 +78,14 @@ class _ListPageState extends ConsumerState<ListPage> {
                       ),
                       trailing: IconButton(
                         onPressed: () {
-                          log('Favorite button pressed for ${pokemon.name}');
                           final favoritePokemon = FavoritePokemonModel.fromPokemonModel(pokemon);
-                          ref.read(favoritePokemonListNotifierProvider.notifier).addFavorite(favoritePokemon);
+                          if (isFavorite) {
+                            ref.read(favoritePokemonListNotifierProvider.notifier).removeFavorite(pokemon.id);
+                          } else {
+                            ref.read(favoritePokemonListNotifierProvider.notifier).addFavorite(favoritePokemon);
+                          }
                         },
-                        icon: const Icon(Icons.favorite_border)
+                        icon: Icon(Icons.favorite, color: (isFavorite) ? Colors.red : Colors.grey)
                       ),
                       title: Text(formatName),
                       subtitle: Text('Types: ${pokemon.types.join(', ')}'),
