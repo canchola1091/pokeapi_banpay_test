@@ -1,4 +1,3 @@
-// ... código anterior ...
 
 import 'package:pokeapi_banpay_test/data/datasources/remote/pokemon_remote_data_source.dart';
 import 'package:pokeapi_banpay_test/data/models/pokemon_model.dart';

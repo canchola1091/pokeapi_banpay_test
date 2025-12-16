@@ -1,11 +1,14 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pokeapi_banpay_test/data/models/pokemon_model.dart';
 import 'package:pokeapi_banpay_test/presentation/providers/pokemon_provider.dart';
 
 class DetailPage extends ConsumerStatefulWidget {
-  final int pokemonId; // Recibimos el ID en lugar del modelo
-  final String pokemonName; // Opcional, para el título
+
+  final int pokemonId;
+  final String pokemonName;
 
   const DetailPage({super.key, required this.pokemonId, required this.pokemonName});
 
@@ -28,16 +31,16 @@ class _DetailPageState extends ConsumerState<DetailPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.pokemonName), // Usamos el nombre pasado
+        title: Text(widget.pokemonName),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
-      body: pokemonDetailState.isLoading
+      body: (pokemonDetailState.isLoading)
           ? const Center(child: CircularProgressIndicator())
-          : pokemonDetailState.errorMessage != null
+          : (pokemonDetailState.errorMessage != null)
               ? Center(child: Text('Error: ${pokemonDetailState.errorMessage}'))
-              : pokemonDetailState.pokemon == null
-                  ? const Center(child: Text('No data available'))
-                  : _buildDetailContent(pokemonDetailState.pokemon!), // Pasamos el modelo a otro método
+              : (pokemonDetailState.pokemon == null)
+                  ? const Center(child: Text('No hay datos disponibles'))
+                  : _buildDetailContent(pokemonDetailState.pokemon!),
     );
   }
 
@@ -48,7 +51,6 @@ class _DetailPageState extends ConsumerState<DetailPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Imagen centrada del Pokémon
             Center(
               child: Image.network(
                 pokemon.imageUrl,
@@ -57,39 +59,28 @@ class _DetailPageState extends ConsumerState<DetailPage> {
                 fit: BoxFit.contain,
                 errorBuilder: (context, error, stackTrace) {
                   return const Icon(Icons.broken_image, size: 100,);
-                },
-              ),
+                }
+              )
             ),
-            const SizedBox(height: 20),
 
-            // Nombre del Pokémon
-            Text(
-              'Name: ${pokemon.name}',
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
-            const SizedBox(height: 10),
-
-            // ID del Pokémon
             Text(
               'ID: ${pokemon.id}',
               style: Theme.of(context).textTheme.bodyLarge,
             ),
             const SizedBox(height: 10),
 
-            // Altura y Peso
             Text(
-              'Height: ${(pokemon.height / 10).toStringAsFixed(1)} m | Weight: ${(pokemon.weight / 10).toStringAsFixed(1)} kg',
+              'Altura: ${(pokemon.height / 10).toStringAsFixed(1)} m | Peso: ${(pokemon.weight).toStringAsFixed(2)} kg',
               style: Theme.of(context).textTheme.bodyLarge,
             ),
             const SizedBox(height: 10),
 
-            // Tipos del Pokémon
             if (pokemon.types.isNotEmpty)
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Types:',
+                    'Tipos:',
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                   Wrap(
@@ -105,9 +96,8 @@ class _DetailPageState extends ConsumerState<DetailPage> {
                 ],
               ),
 
-            // Estadísticas Base
             Text(
-              'Base Stats:',
+              'Estadisticas:',
               style: Theme.of(context).textTheme.titleMedium,
             ),
             ...pokemon.stats.map((stat) => Padding(
@@ -122,9 +112,8 @@ class _DetailPageState extends ConsumerState<DetailPage> {
                 )),
             const SizedBox(height: 20),
 
-            // Habilidades
             Text(
-              'Abilities:',
+              'Habilidades:',
               style: Theme.of(context).textTheme.titleMedium,
             ),
             ...pokemon.abilities.map((ability) => Padding(
@@ -142,23 +131,21 @@ class _DetailPageState extends ConsumerState<DetailPage> {
                 )),
             const SizedBox(height: 20),
 
-            // Movimientos (mostramos solo los primeros 10)
             Text(
-              'Moves (First 10):',
+              'Movimientos:',
               style: Theme.of(context).textTheme.titleMedium,
             ),
             Wrap(
               spacing: 8.0,
               children: pokemon.moves.take(10).map((move) => Chip(label: Text(move.name))).toList(),
-            ),
-          ],
-        ),
-      ),
+            )
+          ]
+        )
+      )
     );
   }
 
   Color _getTypeColor(String type) {
-    // ... código anterior ...
     switch (type.toLowerCase()) {
       case 'normal':
         return Colors.grey;
@@ -202,7 +189,7 @@ class _DetailPageState extends ConsumerState<DetailPage> {
   }
 
   String _formatStatName(String statName) {
-    // Convierte 'hp' en 'HP', 'attack' en 'Attack', etc.
+    log('Formatting stat name: $statName');
     return statName.split('-').map((word) => word[0].toUpperCase() + word.substring(1)).join(' ');
   }
 }
