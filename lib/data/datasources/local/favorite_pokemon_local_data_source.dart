@@ -30,7 +30,6 @@ class FavoritePokemonLocalDataSourceImpl implements FavoritePokemonLocalDataSour
     final prefs = await SharedPreferences.getInstance();
     final list = await getFavoritePokemonList();
     
-    // Evita duplicados
     if (!list.any((p) => p.id == pokemon.id)) {
       list.add(pokemon);
       await prefs.setString(_key, json.encode(list));
