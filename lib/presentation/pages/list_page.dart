@@ -10,6 +10,7 @@ import 'package:pokeapi_banpay_test/presentation/pages/favorites_page.dart';
 import 'package:pokeapi_banpay_test/presentation/providers/favorite_pokemon_provider.dart';
 import 'package:pokeapi_banpay_test/presentation/providers/pokemon_notifier.dart';
 import 'package:pokeapi_banpay_test/presentation/providers/pokemon_provider.dart';
+import 'package:pokeapi_banpay_test/presentation/widgets/shared/loading_widget.dart';
 class ListPage extends ConsumerStatefulWidget {
 
   const ListPage({super.key});
@@ -54,14 +55,7 @@ class _ListPageState extends ConsumerState<ListPage> {
         ] : [],
       ),
       body: (pokemonState.isLoading)
-          ? const Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Center(child: CircularProgressIndicator()),
-              SizedBox(height: 15.0),
-              Text('Cargando, espere un momento...'),
-            ],
-          )
+          ? const LoadingWidget()
           : (pokemonState.errorMessage != null)
               ? Center(child: Text('Error: ${pokemonState.errorMessage}'))
               : ListView.builder(
