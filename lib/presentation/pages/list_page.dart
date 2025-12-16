@@ -38,6 +38,7 @@ class _ListPageState extends ConsumerState<ListPage> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: const Text('Lista de Pokemones'),
+        centerTitle: true,
         actions: (favoriteIds.isNotEmpty)
         ? [
           IconButton(
@@ -58,6 +59,7 @@ class _ListPageState extends ConsumerState<ListPage> {
       : (pokemonState.errorMessage != null)
         ? Center(child: Text('Error: ${pokemonState.errorMessage}'))
         : ListView.builder(
+          physics: const BouncingScrollPhysics(),
             itemCount: pokemonState.pokemons?.length ?? 0,
             itemBuilder: (context, index) {
 
