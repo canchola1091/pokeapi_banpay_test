@@ -8,6 +8,7 @@ import 'package:pokeapi_banpay_test/domain/repositories/pokemon_repository.dart'
 import 'package:pokeapi_banpay_test/domain/usecases/get_pokemon_detail.dart';
 import 'package:pokeapi_banpay_test/domain/usecases/get_pokemon_id.dart';
 import 'package:pokeapi_banpay_test/domain/usecases/get_pokemon_list.dart';
+import 'package:pokeapi_banpay_test/presentation/providers/pokemon_detail_notifier.dart';
 import 'pokemon_notifier.dart';
 
 //? Provider Dio
@@ -41,4 +42,7 @@ final pokemonListNotifierProvider = StateNotifierProvider<PokemonListNotifier, P
   (ref) => PokemonListNotifier( ref.watch(getPokemonListProvider) )
 );
 
-
+//? Provider Notifier Detalle
+final pokemonDetailNotifierProvider = StateNotifierProvider.family<PokemonDetailNotifier, PokemonDetailState, int>(
+  (ref, id) => PokemonDetailNotifier( ref.watch(getPokemonDetailProvider),id ),
+);
