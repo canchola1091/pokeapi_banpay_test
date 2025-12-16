@@ -6,9 +6,9 @@ class FavoritePokemonModel {
   final int id;
   final String name;
   final String imageUrl;
-  final String note;
+  String note;
 
-  const FavoritePokemonModel({
+  FavoritePokemonModel({
     required this.id,
     required this.name,
     required this.imageUrl,
