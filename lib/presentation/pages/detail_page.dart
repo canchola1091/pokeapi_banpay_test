@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:pokeapi_banpay_test/data/models/pokemon_model.dart';
 import 'package:pokeapi_banpay_test/presentation/providers/pokemon_provider.dart';
+import 'package:pokeapi_banpay_test/presentation/widgets/shared/loading_widget.dart';
 
 class DetailPage extends ConsumerStatefulWidget {
 
@@ -50,7 +51,7 @@ class _DetailPageState extends ConsumerState<DetailPage> {
         )
       ),
       body: (pokemonDetailState.isLoading)
-          ? const Center(child: CircularProgressIndicator())
+          ? const LoadingWidget()
           : (pokemonDetailState.errorMessage != null)
               ? Center(child: Text('Error: ${pokemonDetailState.errorMessage}'))
               : (pokemonDetailState.pokemon == null)
