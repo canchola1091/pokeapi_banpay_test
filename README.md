@@ -29,7 +29,7 @@ Hay un fucnionlidad en la cúal se permite al usuario realizar un CRUD mediante 
     *   Tener instalado el SDK de Flutter (versión >= 3.24.2) y sus herramientas asociadas (Dart SDK, Android Studio/Xcode, Simulador, etc).
 
 2.  **Clonar el Repositorio:**
-    git clone https://github.com/tu_usuario/pokeapi_flutter_app.git
+    git clone  https://github.com/canchola1091/pokeapi_banpay_test
     cd pokeapi_flutter_app
 
 3.  **Obtener Dependencias:**
