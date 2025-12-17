@@ -1,4 +1,5 @@
 
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pokeapi_banpay_test/data/models/favorite_pokemon_model.dart';
@@ -82,26 +83,28 @@ class PokemonFavoriteCard extends ConsumerWidget {
     TextEditingController controller = TextEditingController(text: pokemon.note);
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text('Agrega/Edita una nota para ${pokemon.name}'),
-        content: TextField(
-          controller: controller,
-          decoration: const InputDecoration(hintText: 'Add a note...'),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancelar'),
+      builder: (context) => FlipInX(
+        child: AlertDialog(
+          title: Text( (pokemon.note.isEmpty) ? 'Agrega una nota' : 'Editar Nota'),
+          content: TextField(
+            controller: controller,
+            decoration: const InputDecoration(hintText: 'Nota...'),
           ),
-          ElevatedButton(
-            onPressed: () async {
-              await ref.read(favoritePokemonListNotifierProvider.notifier).updateFavorite(pokemon.id, pokemon.note = controller.text);
-              // ignore: use_build_context_synchronously
-              Navigator.pop(context);
-            },
-            child: const Text('Guardar'),
-          )
-        ]
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancelar'),
+            ),
+            TextButton(
+              onPressed: () async {
+                await ref.read(favoritePokemonListNotifierProvider.notifier).updateFavorite(pokemon.id, pokemon.note = controller.text);
+                // ignore: use_build_context_synchronously
+                Navigator.pop(context);
+              },
+              child: const Text('Guardar'),
+            )
+          ]
+        )
       )
     );
   }
