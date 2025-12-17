@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:pokeapi_banpay_test/data/models/favorite_pokemon_model.dart';
 import 'package:pokeapi_banpay_test/presentation/providers/favorite_pokemon_provider.dart';
+import 'package:pokeapi_banpay_test/presentation/widgets/favorites/pokemon_favorite_card.dart';
 
 class FavoritesPage extends ConsumerWidget {
 
@@ -47,69 +48,8 @@ class FavoritesPage extends ConsumerWidget {
           ),
           itemCount: favorites.length,
           itemBuilder: (context, index) {
-            final pokemon = favorites[index];
-            return Card(
-              color: Theme.of(context).colorScheme.inversePrimary.withOpacity(0.6),
-              elevation: 0.0,
-              clipBehavior: Clip.antiAlias,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-
-                  Image.network( pokemon.imageUrl ),
-
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          pokemon.name[0].toUpperCase() + pokemon.name.substring(1),
-                          style: const TextStyle(
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.bold,
-                          )
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.delete),
-                          onPressed: () {
-                            ref.read(favoritePokemonListNotifierProvider.notifier).removeFavorite(pokemon.id);
-                          }
-                        )
-                      ]
-                    )
-                  ),
-                  const SizedBox(height: 5.0),
-
-                  GestureDetector(
-                    onTap: () => _showEditNoteDialog(context, ref, pokemon),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Flexible(
-                            child: Text(
-                              (pokemon.note.isEmpty) ? 'Sin notas' : pokemon.note,
-                              maxLines: 2,
-                              style: const TextStyle(
-                                fontSize: 14.0,
-                              ),
-                              overflow: TextOverflow.ellipsis
-                            )
-                          ),
-                          const Icon(Icons.edit)
-                        ]
-                      )
-                    )
-                  )
-
-                ]
-              )
-            );
+            final FavoritePokemonModel pokemon = favorites[index];
+            return PokemonFavoriteCard(pokemonFavoriteModel: pokemon);
           }
         ),
         error: (error, stack) => Center(child: Text('Error: $error')),
@@ -118,31 +58,4 @@ class FavoritesPage extends ConsumerWidget {
     );
   }
 
-  void _showEditNoteDialog(BuildContext context, WidgetRef ref, FavoritePokemonModel pokemon) {
-    TextEditingController controller = TextEditingController(text: pokemon.note);
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text('Agrega/Edita una nota para ${pokemon.name}'),
-        content: TextField(
-          controller: controller,
-          decoration: const InputDecoration(hintText: 'Add a note...'),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancelar'),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              await ref.read(favoritePokemonListNotifierProvider.notifier).updateFavorite(pokemon.id, pokemon.note = controller.text);
-              // ignore: use_build_context_synchronously
-              Navigator.pop(context);
-            },
-            child: const Text('Guardar'),
-          )
-        ]
-      )
-    );
-  }
 }
