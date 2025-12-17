@@ -61,15 +61,13 @@ class PokemonFavoriteCard extends ConsumerWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Flexible(
-                    child: Text(
-                      (pokemonFavoriteModel.note.isEmpty) ? 'Sin notas' : pokemonFavoriteModel.note,
-                      maxLines: 2,
-                      style: const TextStyle(
-                        fontSize: 14.0,
-                      ),
-                      overflow: TextOverflow.ellipsis
-                    )
+                  Text(
+                    (pokemonFavoriteModel.note.isEmpty) ? 'Sin notas' : pokemonFavoriteModel.note,
+                    maxLines: 1,
+                    style: const TextStyle(
+                      fontSize: 14.0,
+                    ),
+                    overflow: TextOverflow.ellipsis
                   ),
                   const Icon(Icons.edit)
                 ]
@@ -89,6 +87,7 @@ class PokemonFavoriteCard extends ConsumerWidget {
         child: AlertDialog(
           title: Text( (pokemon.note.isEmpty) ? 'Agrega una nota' : 'Editar Nota'),
           content: TextField(
+            maxLength: 15,
             controller: controller,
             decoration: const InputDecoration(hintText: 'Nota...'),
           ),
