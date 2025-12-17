@@ -31,8 +31,11 @@ class _PokemonItemState extends ConsumerState<PokemonTile> {
     final String formatName = widget.pokemonModel.name[0].toUpperCase() + widget.pokemonModel.name.substring(1);
 
     return ListTile(
-      leading: CircleAvatar(
-        backgroundImage: NetworkImage(widget.pokemonModel.imageUrl),
+      leading: Hero(
+        tag: '${widget.pokemonModel.id}',
+        child: CircleAvatar(
+          backgroundImage: NetworkImage(widget.pokemonModel.imageUrl),
+        ),
       ),
       trailing: IconButton(
         onPressed: () {
@@ -46,7 +49,7 @@ class _PokemonItemState extends ConsumerState<PokemonTile> {
         icon: Icon(Icons.favorite, color: (widget.isFavoritePokemon) ? Colors.red : Colors.grey)
       ),
       title: Text(formatName),
-      subtitle: Text('Types: ${widget.pokemonModel.types.join(', ')}'),
+      subtitle: Text('Tipos: ${widget.pokemonModel.types.join(', ')}'),
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute(

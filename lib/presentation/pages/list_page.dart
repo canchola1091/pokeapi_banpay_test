@@ -37,7 +37,14 @@ class _ListPageState extends ConsumerState<ListPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text('Lista de Pokemones'),
+        title: const Text(
+          'Lista de Pokemones',
+          style: TextStyle(
+            fontSize: 20.0,
+            fontWeight: FontWeight.bold,
+            color: Colors.white
+          ),
+        ),
         centerTitle: true,
         actions: (favoriteIds.isNotEmpty)
         ? [
@@ -73,6 +80,7 @@ class _ListPageState extends ConsumerState<ListPage> {
             }
           ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         child: const Icon(Icons.refresh),
         onPressed: () => ref.read(pokemonListNotifierProvider.notifier).loadPokemonList()
       )
