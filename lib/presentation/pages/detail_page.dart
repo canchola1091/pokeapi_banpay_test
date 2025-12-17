@@ -1,4 +1,5 @@
 
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -59,107 +60,109 @@ class _DetailPageState extends ConsumerState<DetailPage> {
   }
 
   Widget _detailContent(PokemonDetailModel pokemon) {
-    return SingleChildScrollView(
-      physics: const BouncingScrollPhysics(),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Hero(
-              tag: '${pokemon.id}',
-              child: Center(
-                child: Image.network(
-                  pokemon.imageUrl,
-                  width: 200,
-                  height: 200,
-                  fit: BoxFit.contain,
-                  errorBuilder: (context, error, stackTrace) {
-                    return const Icon(Icons.broken_image, size: 100,);
-                  }
-                )
-              ),
-            ),
-
-            Text(
-              'Altura: ${(pokemon.height / 10).toStringAsFixed(1)} m | Peso: ${(pokemon.weight).toStringAsFixed(2)} kg',
-              style: Theme.of(context).textTheme.bodyLarge,
-            ),
-            const SizedBox(height: 10),
-
-            if (pokemon.types.isNotEmpty)
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Tipos:',
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                  Wrap(
-                    spacing: 8.0,
-                    children: pokemon.types.map((type) {
-                      return Chip(
-                        label: Text(type),
-                        backgroundColor: _getTypeColor(type),
-                      );
-                    }).toList(),
-                  ),
-                  const SizedBox(height: 20),
-                ]
-              ),
-
-            Text(
-              'Estadisticas:',
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            ...pokemon.stats.map((stat) => Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 2.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('${_formatStatName(stat.name)}:'),
-                      Text(stat.baseStat.toString()),
-                    ],
-                  ),
-                )),
-            const SizedBox(height: 20),
-
-            Text(
-              'Habilidades:',
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            ...pokemon.abilities.map((ability) => Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 2.0),
-                  child: Row(
-                    children: [
-                      Text(ability.name)
-                    ]
-                  )
-                )),
-            const SizedBox(height: 20),
-
-            Text(
-              'Movimientos:',
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            Wrap(
-              spacing: 8.0,
-              children: pokemon.moves.take(10).map((move) => Chip(
-                label: Text(move.name, style: const TextStyle(color: Colors.white)),
-                backgroundColor: Theme.of(context).colorScheme.inversePrimary.withOpacity(0.8),
-                elevation: 5.0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                  side: const BorderSide(
-                    color: Colors.white,
-                    width: 2.0
+    return FadeInDown(
+      child: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Hero(
+                tag: '${pokemon.id}',
+                child: Center(
+                  child: Image.network(
+                    pokemon.imageUrl,
+                    width: 200,
+                    height: 200,
+                    fit: BoxFit.contain,
+                    errorBuilder: (context, error, stackTrace) {
+                      return const Icon(Icons.broken_image, size: 100,);
+                    }
                   )
                 ),
-              )).toList(),
-            )
-          ]
+              ),
+      
+              Text(
+                'Altura: ${(pokemon.height / 10).toStringAsFixed(1)} m | Peso: ${(pokemon.weight).toStringAsFixed(2)} kg',
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+              const SizedBox(height: 10),
+      
+              if (pokemon.types.isNotEmpty)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Tipos:',
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    Wrap(
+                      spacing: 8.0,
+                      children: pokemon.types.map((type) {
+                        return Chip(
+                          label: Text(type),
+                          backgroundColor: _getTypeColor(type),
+                        );
+                      }).toList(),
+                    ),
+                    const SizedBox(height: 20),
+                  ]
+                ),
+      
+              Text(
+                'Estadisticas:',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              ...pokemon.stats.map((stat) => Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 2.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('${_formatStatName(stat.name)}:'),
+                        Text(stat.baseStat.toString()),
+                      ],
+                    ),
+                  )),
+              const SizedBox(height: 20),
+      
+              Text(
+                'Habilidades:',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              ...pokemon.abilities.map((ability) => Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 2.0),
+                    child: Row(
+                      children: [
+                        Text(ability.name)
+                      ]
+                    )
+                  )),
+              const SizedBox(height: 20),
+      
+              Text(
+                'Movimientos:',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              Wrap(
+                spacing: 8.0,
+                children: pokemon.moves.take(10).map((move) => Chip(
+                  label: Text(move.name, style: const TextStyle(color: Colors.white)),
+                  backgroundColor: Theme.of(context).colorScheme.inversePrimary.withOpacity(0.8),
+                  elevation: 5.0,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    side: const BorderSide(
+                      color: Colors.white,
+                      width: 2.0
+                    )
+                  ),
+                )).toList(),
+              )
+            ]
+          )
         )
-      )
+      ),
     );
   }
 
