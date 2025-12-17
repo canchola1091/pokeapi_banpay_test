@@ -8,7 +8,7 @@ import 'package:pokeapi_banpay_test/data/models/pokemon_model.dart';
 import 'package:pokeapi_banpay_test/presentation/pages/detail_page.dart';
 import 'package:pokeapi_banpay_test/presentation/providers/favorite_pokemon_provider.dart';
 
-class PokemonTile extends ConsumerStatefulWidget {
+class PokemonTile extends ConsumerWidget {
 
   final PokemonModel pokemonModel;
   final bool isFavoritePokemon;
@@ -20,41 +20,35 @@ class PokemonTile extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<ConsumerStatefulWidget>  createState() => _PokemonItemState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
 
-class _PokemonItemState extends ConsumerState<PokemonTile> {
-
-  @override
-  Widget build(BuildContext context) {
-
-    final String formatName = widget.pokemonModel.name[0].toUpperCase() + widget.pokemonModel.name.substring(1);
+    final String formatName = pokemonModel.name[0].toUpperCase() + pokemonModel.name.substring(1);
 
     return ListTile(
       leading: Hero(
-        tag: '${widget.pokemonModel.id}',
+        tag: '${pokemonModel.id}',
         child: CircleAvatar(
-          backgroundImage: NetworkImage(widget.pokemonModel.imageUrl),
+          backgroundImage: NetworkImage(pokemonModel.imageUrl),
         ),
       ),
       trailing: IconButton(
         onPressed: () {
-          final favoritePokemon = FavoritePokemonModel.fromPokemonModel(widget.pokemonModel);
-          if (widget.isFavoritePokemon) {
-            ref.read(favoritePokemonListNotifierProvider.notifier).removeFavorite(widget.pokemonModel.id);
+          final favoritePokemon = FavoritePokemonModel.fromPokemonModel(pokemonModel);
+          if (isFavoritePokemon) {
+            ref.read(favoritePokemonListNotifierProvider.notifier).removeFavorite(pokemonModel.id);
           } else {
             ref.read(favoritePokemonListNotifierProvider.notifier).addFavorite(favoritePokemon);
           }
         },
-        icon: Icon(Icons.favorite, color: (widget.isFavoritePokemon) ? Colors.red : Colors.grey)
+        icon: Icon(Icons.favorite, color: (isFavoritePokemon) ? Colors.red : Colors.grey)
       ),
       title: Text(formatName),
-      subtitle: Text('Tipos: ${widget.pokemonModel.types.join(', ')}'),
+      subtitle: Text('Tipos: ${pokemonModel.types.join(', ')}'),
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => DetailPage(
-              pokemonId: widget.pokemonModel.id,
+              pokemonId: pokemonModel.id,
               pokemonName: formatName
             )
           )
