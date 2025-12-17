@@ -30,7 +30,7 @@ Hay un fucnionlidad en la cúal se permite al usuario realizar un CRUD mediante 
 
 2.  **Clonar el Repositorio:**
     git clone  https://github.com/canchola1091/pokeapi_banpay_test
-    cd pokeapi_flutter_app
+    cd <pokeapi_banpay_test>
 
 3.  **Obtener Dependencias:**
     flutter pub get
