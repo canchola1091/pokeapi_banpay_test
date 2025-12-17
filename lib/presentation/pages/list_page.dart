@@ -1,4 +1,5 @@
 
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -73,15 +74,18 @@ class _ListPageState extends ConsumerState<ListPage> {
               final PokemonModel pokemon = pokemonState.pokemons![index];
               final isFavorite = favoriteIds.contains(pokemon.id);
 
-              return PokemonTile(
-                pokemonModel: pokemon,
-                isFavoritePokemon: isFavorite
+              return FadeInLeft(
+                delay: Duration(milliseconds: index * 7),
+                child: PokemonTile(
+                  pokemonModel: pokemon,
+                  isFavoritePokemon: isFavorite
+                ),
               );
             }
           ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        child: const Icon(Icons.refresh),
+        child: const Icon(Icons.refresh, color: Colors.white),
         onPressed: () => ref.read(pokemonListNotifierProvider.notifier).loadPokemonList()
       )
     );
