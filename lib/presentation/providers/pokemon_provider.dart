@@ -30,7 +30,6 @@ final pokemonRepositoryProvider = Provider<PokemonRepository>((ref) => PokemonRe
 //? Provider Caso de Uso (obtener lista)
 final getPokemonListProvider = Provider<GetPokemonList>((ref) => GetPokemonList(ref.watch(pokemonRepositoryProvider)));
 
-
 //? Provider Caso de Uso (obtener detalles)
 final getPokemonDetailProvider = Provider<GetPokemonDetail>((ref) => GetPokemonDetail(ref.watch(pokemonRepositoryProvider)));
 
